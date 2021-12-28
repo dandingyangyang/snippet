@@ -65,8 +65,8 @@ Array.of(1,2,3) // 返回[1,2,3]
 
 5. 函数用bind绑定this之后不能再用bind去改变this了
 
-6. 解释型语言（js）运行时需要预编译+运行。
-编译型语言（c）运行之前需要编译，编译完了之后再运行，所以它运行比解释型语言快
+6. 解释型语言（interpreted language）（如js）运行时需要预编译+运行。
+编译型语言（compiled language）（如c语言）运行之前需要编译，编译完了之后再运行，所以它运行比解释型语言快
 
 7. 观察者模式
 
@@ -153,3 +153,61 @@ export {
 
 14. navigator.onLine检查是否有网
 
+15. 语句和表达式的区别
+
+- 语句表示执行了一个动作（程序是由语构成，语句则是有“；”分隔的句子或命令）
+
+- 表达式是有返回值的（表达式是由运算法构成，并运算产生结果）
+
+16. 夏令时和冬令时
+
+夏令时：到凌晨2点的时候，直接变成凌晨3点（这一天少了1个小时，只有23小时）
+
+冬令时：到凌晨3点的时候，回退变成凌晨2点的时间。
+
+在2018-3-11 也就是夏令时的那一天
+
+- （1）+new Date('2018-3-11 02:00:00')
+
+得到：1520751600000
+
+- （2）+new Date('2018-3-11 03:00:00')
+
+得到： 1520751600000
+
+- （3）new Date(1520751600000)
+
+得到：Sun Mar 11 2018 03:00:00 GMT-0400 (北美东部夏令时间)
+
+两个字符串得到的是同一个时间戳，但是用这个时间戳去获取字符串，发现获取的是3点的字符串，而不是两点。
+所以这就是   字符串到时间戳是多对一；时间戳到字符串是一对一
+
+17. 「采坑经历」使用visibilitychange事件时，需要挂在document上
+
+```javascript
+document.addEventListener('visibilitychange', handleVisibilityChange);
+// 不能挂在window上，否则safari会有问题，因为safari的这个事件不会从document冒泡到window
+```
+
+18. 「采坑经历」pagehide事件在safari 14及之前版本都不支持。所以还是用visibilitychange事件吧
+
+```
+document.addEventListener('visibilitychange', handleVisibilityChange)
+```
+
+19. babel的插件虽然所是plugin运行在preset之前，但是他只是引入插件源码有这个顺序，真实遍历的时候，babel只会遍历一遍，所以program节点的遍历一定会是最早的，即使是preset中的program也会比plugin中的jsxAttribute节点要早。 
+见[stackoverflow](https://stackoverflow.com/questions/34618756/babel-plugins-run-order)
+
+
+20.「采坑经历」 window.addEventListener('beforeunload')和window.onbeforeunload 在没有用户交互的时候，不会触发页面阻塞，不会显示询问框。同时他俩的区别：
+![区别](../图片/beforeunload.png)
+
+21. 
+
+```javascript
+// 假如user存在，那么session中会出现user这个key，如果user不存在则不会出现这个key。这种简便写法可以学习下
+const session = new Session({
+    a: 1,
+    ...(user && { user:  'hhh'}),
+});
+```

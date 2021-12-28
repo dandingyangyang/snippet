@@ -110,7 +110,7 @@ iframe的onload事件至今我还没发现会像image的onload那样出现不执
 
 不过像404，500这样的错误码会触发ajax的error方法，可以在error方法里面获取具体错误码是404还是500，这种情况对于开发人员是可感知的。
 
-12. 使用原生js的时候，dom.style.xxx 只能拿到内联样式，拿不到css中的样式。得用``window.getComputedStyle``
+12. 使用原生js的时候，dom.style.xxx 只能拿到内联样式，拿不到css中的样式。得用``window.getComputedStyle``。同时伪元素``:before``和``:after`` 也无法通过节点的style对象获取，只能通过``window.getComputedStyle``
 
 ```javascript
 var card = document.querySelector('.card');
@@ -118,6 +118,20 @@ var card = document.querySelector('.card');
 Var marginLeft = card.style.marginLeft;
 // 这个时候需要用下面方法来获取元素的样式。
 window.getComputedStyle(card).marginLeft
+```
+
+```css
+#test:before {
+  content: 'Before ';
+  color: #FF0;
+}
+```
+
+```javascript
+var test = document.querySelector('#test');
+
+var result = window.getComputedStyle(test, ':before').content;
+var color = window.getComputedStyle(test, ':before').color;
 ```
 
 11. textContent和innerText
