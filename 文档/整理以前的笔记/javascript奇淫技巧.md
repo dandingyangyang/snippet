@@ -211,3 +211,15 @@ const session = new Session({
     ...(user && { user:  'hhh'}),
 });
 ```
+
+22.
+
+原始对象的toString方法返回的是"[object Object]"
+
+由于Array重写的Object的toString方法，所以数字的toString方法返回可以看到内容：
+
+```javascript
+({a: 1, b:2}).toString() // 返回 ”[object Object]"
+([1,2,3]).toString()  //  ”1,2,3”
+```
+

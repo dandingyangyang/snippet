@@ -464,4 +464,72 @@ function instanceof2(instance, constructor) {
 }
 
 // setTimeout 实现setInterval
+function setInterval1(fn, time) {
+    let id = 0;
+    function loop() {
+        id = setTimeout(() => {
+            fn();
+            loop();
+        }, time);
+    }
+    loop();
+    return function(id) {
+        clearTimeout(id);
+    }
+}
+
+// setInterval 实现 setTimeout
+function setTimeout1(fn, time) {
+    let id = setInterval(() => {
+        fn();
+        clearInterval(id);
+    }, time);
+    return () => {
+        clearInterval(id);
+    }
+}
+
+// 合并区间算法 如 [[1,2], [2, 4], [6, 9]] ===> [[1, 4], [6, 9]]
+function merge(arr) {
+    return arr.reduce((pre, item) => {
+        if (pre.length && item[0] <= pre[pre.length - 1][1]) {
+            const last = pre.pop();
+            pre.push([last[0], item [1]])
+        } else {
+            pre.push(item)
+        }
+        return pre;
+    }, []);
+}
+
+function convert(list) {
+    const result = [];
+    const obj = list.reduce((res, data) => {
+        res[data.id] = data;
+        return res;
+    }, {});
+    list.forEach(item => {
+        if (item.parentId === 0) {
+            result.push(item);
+        } else {
+            const parent = obj[item.parentId];
+            parent.children = parent.children || [];
+            parent.children.push(item);
+        }
+    });
+    return result;
+}
+
+function convert(source, parentId = '0') {
+    let tree = [];
+    source.forEach(item => {
+        if (item.parentId === parentId) {
+            tree.push(item);
+            item.children = convert(source, item.id);
+        }
+    });
+    return tree;
+}
+
+
 

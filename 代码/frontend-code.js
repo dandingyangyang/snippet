@@ -336,6 +336,8 @@ function deepCopy1(from) {
   function isFunction(fn) {
     return typeof fn === 'function';
   }
+  
+// 当不确定aaa是否是promise时，【注意】let a = Promise.resolve(aaa) 可以把aaa转成一个promise对象a，使用a.then(() => {})顺序执行某些东西
   class MyPromise {
     constructor(fn) {
       if (!isFunction(fn)) {
@@ -447,10 +449,12 @@ function deepCopy1(from) {
       return this.then(null, fn);
     }
     finally(callback) {
+      // promise 的 finally 只是不管成功还是失败都会执行而已，而不一定会永远最后执行
       const P = this.constructor;
       return this.then(
         // 不直接使用Promise.resolve而是使用P.resolve 是为了兼容哪些低版本的polyfill，这些polyfill可能不叫Promise，可能叫MyPromise
         value => P.resolve(callback(value)).then(() => value),
+        // 之所以要用P.resolve 是考虑到callback可能是一个异步函数，并且希望等callback执行完再接着执行
         reason => P.resolve(callback(reason)).then(() => { throw reason})
       );
     }
@@ -655,6 +659,23 @@ function deepCopy1(from) {
       setTimeout(resolve, time);
     });
   }
+
+  // 迭代器 https://es6.ruanyifeng.com/#docs/iterator
+  const makeIterator = (arr) => {
+    let index = 0;
+    return {
+      next: () => {
+        return {
+          done: index < arr.length ? false : true,
+          value: arr[index++]
+        }
+      }
+    }
+  }
+  const it = makeIterator(['人月', '神话']);
+  console.log(it.next()); // { value: "人月", done: false }
+  console.log(it.next()); // { value: "神话", done: false }
+  console.log(it.next()); // {value: undefined, done: true }
   
   
   
