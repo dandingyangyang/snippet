@@ -18,13 +18,13 @@ const traceStack = [];
 let config = { env: 'development', bizName: 'frontend.ad.dsp' }; // 默认development环境
 const getPerfHost = function() {
     return config.env === 'production'
-        ? 'https://frontend-perf-service.e.kuaishou.com'
-        : 'https://frontend-perf-service.test.gifshow.com';
+        ? 'https://www.aa.com'
+        : 'https://www.bbb.com';
 };
 const getTraceHost = function() {
     return config.env === 'production'
-        ? 'https://webview-b.e.kuaishou.com'
-        : 'https://ad-log-dispatch.test.gifshow.com';
+    ? 'https://www.aa.com'
+    : 'https://www.bbb.com';
 };
 const getTraceUrl = function() {
     return `${getTraceHost()}/rest/logDispatch/h5/batchTraceLog`;

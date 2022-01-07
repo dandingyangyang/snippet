@@ -2811,6 +2811,10 @@ BFS总体的套路是：
 1.定义一个队列，将第一个位置push进去；
 2.确定搜索方向；
 3.循环，直到队列为空
+
+// 【注意】
+// 1.队列：用来存储每一轮遍历得到的节点；(数组shift（）)
+// 2.标记：对于遍历过的节点，应该将它标记，防止重复遍历。
  */
 var shortestPathBinaryMatrix = function (grid) {
     // 缓存矩阵的终点位置
@@ -2912,7 +2916,9 @@ var ladderLength = function(beginWord, endWord, wordList) {
     return 0;
 };
 
-// DFS
+// DFS，【注意】：
+// 1.栈：用栈来保存当前节点信息，当遍历新节点返回时能够继续遍历当前节点.（数组pop（））
+// 2.标记：和 BFS 一样同样需要对已经遍历过的节点进行标记。
 // [695] 查找最大的连通面积
 var maxAreaOfIsland = function(grid) {
     let maxCount = 0;
@@ -3022,6 +3028,9 @@ var pacificAtlantic = function(heights) {
     }
     return result;
 };
+
+// 回溯，主要用于求解排列组合问题
+
 
 // (6) 动态规划： 参考知乎文章https://zhuanlan.zhihu.com/p/91582909
 // 动态规划有三个核心元素：
