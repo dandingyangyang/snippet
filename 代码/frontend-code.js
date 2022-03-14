@@ -503,6 +503,8 @@ function deepCopy1(from) {
       });
     }
   }
+
+  // Promise并发个数限制: https://juejin.cn/post/6844904115487637517
   
   // compose函数
   function compose(fnArr) {
@@ -676,6 +678,19 @@ function deepCopy1(from) {
   console.log(it.next()); // { value: "人月", done: false }
   console.log(it.next()); // { value: "神话", done: false }
   console.log(it.next()); // {value: undefined, done: true }
+
+
+  // 实现这个pipe
+  const fn = pipe(addOne, addTwo, addThree, addFour); // 传入pipe的四个函数都是已实现的
+  fn(1); // 1 + 1 + 2 + 3 + 4 = 11，输出11
   
+  function pipe() {
+    const _arguments = arguments;
+    return function(data) {
+      return [..._arguments].reduce((pre, current) => {
+        return current(pre);
+      }, data);
+    }
+  }
   
   
